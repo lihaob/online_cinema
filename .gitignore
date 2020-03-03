@@ -1,0 +1,13 @@
+node_modules/
+
+.idea/
+/idea/
+*.ipr
+*.iml
+*.iws
+
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
