@@ -1,4 +1,4 @@
 var User=require('../../modules/users')
-User.getUserByName('lhb',function(result,fields){
-    console.log(result[1]);
+User.getUserByName('lhb',function(error,result,fields){
+    console.log(result);
 })

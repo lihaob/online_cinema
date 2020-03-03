@@ -1,11 +1,17 @@
+//external
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session=require('express-session');
+var bodyParser=require('body-parser');
 
+//自定义模块
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+
 
 var app = express();
 
@@ -18,6 +24,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+}))
 
 //配置路由
 app.use('/', indexRouter);
@@ -38,5 +51,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+var svgCaptcha = require('svg-captcha');
+
 
 module.exports = app;

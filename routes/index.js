@@ -1,4 +1,5 @@
 var express = require('express');
+var svgCaptcha = require('svg-captcha');
 var router = express.Router();
 
 /* GET home page. */

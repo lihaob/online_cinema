@@ -3,3 +3,33 @@ exports.SUCCESS={
     msg:'成功',
     result:''
 }
+exports.ERROR={
+    status:'400',
+    msg:'失败',
+    result:'未知错误'
+}
+exports.PASSWORD_ERROR={
+    status:'1001',
+    msg:'失败',
+    result:'两次输入的密码不匹配'
+}
+exports.CAPTCHA_ERROR={
+    status:'1002',
+    msg:'失败',
+    result:'验证码不正确'
+}
+exports.PHONE_EXIST={
+    status:'1003',
+    msg:'失败',
+    result:'电话已被注册'
+}
+exports.EMAIL_EXIST={
+    status:'1004',
+    msg:'失败',
+    result:'EMAIL已被注册'
+}
+exports.INSERT_ERROR={
+    status:'1005',
+    msg:'失败',
+    result:'插入失败'
+}

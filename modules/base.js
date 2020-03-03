@@ -22,10 +22,10 @@ exports.query=function(sql,...args){
             if (err) throw new Error('not connected'); // not connected!
             // Use the connection
             //对sql语句进行转义，防止攻击
-            connection.query(sql,args[0],function (error, results) {
+            connection.query(sql,args[0],function (error, results,fields) {
                 // When done with the connection, release it.
                 connection.release();
-                args[1](arguments);
+                args[1](error,results,fields);
                 // Handle error after the release.
                 if (err) throw new Error('query failed');
                 // Don't use the connection here, it has been returned to the pool.
@@ -40,10 +40,10 @@ exports.query=function(sql,...args){
             if (err) throw new Error('not connected'); // not connected!
             // Use the connection
             //对sql语句进行转义，防止攻击
-            connection.query(sql,function (error, results) {
+            connection.query(sql,function (error, results,fields) {
                 // When done with the connection, release it.
                 connection.release();
-                args[0](arguments);
+                args[0](error,results,fields);
                 // Handle error after the release.
                 if (err) throw new Error('query failed');
                 // Don't use the connection here, it has been returned to the pool.
