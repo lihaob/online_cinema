@@ -13,8 +13,8 @@ function User(user){
 }
 
 User.prototype.save=function(callback){
-    base.query("insert into users(username,password,email,phone,info,image,createTime,updateTime) values(?,?,?,?,null,null,null,null)",
-        [this.username,this.password,this.email,this.phone],function(err,res){
+    base.query("insert into users(username,password,email,phone,info,image) values(?,?,?,?,null,null)",
+        [this.username,this.password,this.email,this.phone],function(err,res,fields){
             if(err){
                 return callback(err,null);
             }

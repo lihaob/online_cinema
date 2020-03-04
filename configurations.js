@@ -9,5 +9,8 @@ module.exports={
     host : 'localhost',
     databaseName : 'online_cinema',
     userName : 'rjgc',
-    password : 'rjgc123'
+    password : 'rjgc123',
+
+    /*对称加密密钥*/
+    secret:"hello world",
 };
