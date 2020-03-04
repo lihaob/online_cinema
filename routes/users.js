@@ -26,4 +26,7 @@ router.get('/captcha', function (req, res) {
 router.post('/register',userController.register);
 
 router.post('/loginByPhone',userController.loginByPhone);
+router.post('/loginByEmail',userController.loginByEmail);
+router.get('/logout',userController.logout);
+
 module.exports = router;

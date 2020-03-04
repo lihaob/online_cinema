@@ -308,6 +308,20 @@ exports.loginByEmail=function(req,res,next){
     });
 };
 
+/*登出功能：get*/
 exports.logout=function(req,res,next){
-
+    if(req.session.user==undefined){
+        return res.json({
+            status:CONST.LOGOUT_ERROR.status,
+            msg:CONST.LOGOUT_ERROR.msg,
+            result:CONST.LOGOUT_ERROR.result
+        });
+    };
+    req.session.user=null;
+    res.json({
+        status:CONST.LOGOUT_SUCCESS.status,
+        msg:CONST.LOGOUT_SUCCESS.msg,
+        result:CONST.LOGOUT_SUCCESS.result
+    });
 }
+

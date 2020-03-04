@@ -8,6 +8,11 @@ exports.LOGIN_SUCCESS={
     msg:'成功',
     result:'登录成功'
 }
+exports.LOGOUT_SUCCESS={
+    status:'202',
+    msg:'成功',
+    result:'登出成功'
+}
 exports.ERROR={
     status:'400',
     msg:'失败',
@@ -52,4 +57,9 @@ exports.LOGIN_ERROR={
     status:'1008',
     msg:'失败',
     result:'登录失败，账户和密码不匹配'
+}
+exports.LOGOUT_ERROR={
+    status:'1009',
+    msg:'失败',
+    result:'登出失败，用户尚未登录'
 }
