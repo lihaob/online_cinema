@@ -3,6 +3,11 @@ exports.SUCCESS={
     msg:'成功',
     result:''
 }
+exports.LOGIN_SUCCESS={
+    status:'201',
+    msg:'成功',
+    result:'登录成功'
+}
 exports.ERROR={
     status:'400',
     msg:'失败',
@@ -32,4 +37,19 @@ exports.INSERT_ERROR={
     status:'1005',
     msg:'失败',
     result:'插入失败'
+}
+exports.PARAM_ERROR={
+    status:'1006',
+    msg:'失败',
+    result:'参数异常'
+}
+exports.USER_NOT_EXIST={
+    status:'1007',
+    msg:'失败',
+    result:'用户不存在'
+}
+exports.LOGIN_ERROR={
+    status:'1008',
+    msg:'失败',
+    result:'登录失败，账户和密码不匹配'
 }
