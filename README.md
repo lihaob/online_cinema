@@ -1,3 +1,4 @@
+```
 com.cinema_online
 ├─ app.js
 ├─ bin//包装app.js
@@ -25,3 +26,6 @@ com.cinema_online
 └─ views
        ├─ error.ejs
        └─ index.ejs
+```
+
+
