@@ -3,11 +3,28 @@ var User=require('../modules/users');
 var UsersLog=require('../modules/usersLog')
 var CryptoJS=require('crypto-js');
 var conf=require('../configurations');
-var utils=require('../utils/utils')
+var utils=require('../utils/utils');
+const formidable = require('formidable');
+var path=require('path')
+
 
 var secret=conf.secret;//获取密钥
+//配置formidable
+var options={
+    uploadDir:conf.uploadDir,
+    keepExtensions:conf.keepExtensions,//是否包括后缀名
+    multiples:conf.multiples,//是否可以同时上传多个文件
+}
+options.uploadDir=path.join(options.uploadDir,'tx');
 
 /*用户注册：post接口
+*@Param username
+*@Param pwd1
+*@Param pwd2
+*@Param email
+*@Param phone
+*@Param captcha
+*return
  *  */
 exports.register=function(req,res,next){
     var username=req.body.username;
@@ -16,7 +33,7 @@ exports.register=function(req,res,next){
     var email=req.body.email;
     var phone=req.body.phone;
     var captcha=req.body.captcha.trim();//用户输入的验证码
-    var captcha_=req.session.captcha.trim();//captcha将验证码的值写入session保存
+    var captcha_=req.session.captcha;//captcha将验证码的值写入session保存
 
     //手机和邮箱不能为空
     if(!email||!phone){
@@ -116,7 +133,8 @@ exports.register=function(req,res,next){
 /*通过手机号登录：post
 * @param phone
 * @param password
-* @param captcha*/
+* @param captcha
+* return 用户基本信息：username,image,用于渲染前端*/
 exports.loginByPhone=function(req,res,next){
     var phone=req.body.phone,
         password=req.body.password,
@@ -198,7 +216,10 @@ exports.loginByPhone=function(req,res,next){
                 res.json({
                     status:CONST.LOGIN_SUCCESS.status,
                     msg:CONST.LOGIN_SUCCESS.msg,
-                    result:CONST.LOGIN_SUCCESS.result
+                    result:{
+                        username:result[0].username,
+                        image:result[0].image
+                    }
                 })
             }else{
                 return res.json({
@@ -213,7 +234,9 @@ exports.loginByPhone=function(req,res,next){
 
 /*通过邮箱登录：post
 * @param email
-* @param password*/
+* @param password
+* @param captcha
+* return 用户基本信息：username,image,用于渲染前端*/
 exports.loginByEmail=function(req,res,next){
     var email=req.body.email,
         password=req.body.password,
@@ -295,7 +318,10 @@ exports.loginByEmail=function(req,res,next){
                 res.json({
                     status:CONST.LOGIN_SUCCESS.status,
                     msg:CONST.LOGIN_SUCCESS.msg,
-                    result:CONST.LOGIN_SUCCESS.result
+                    result:{
+                        username:result[0].username,
+                        image:result[0].image
+                    }
                 })
             }else{
                 return res.json({
@@ -325,7 +351,7 @@ exports.logout=function(req,res,next){
     });
 };
 
-/*通过cookie获取用户详细信息*/
+/*通过cookie获取用户详细信息 get*/
 exports.getUserInf=function(req,res,next){
   var user=req.session.user;
   //某些信息不应该返回给前端，置为空
@@ -340,9 +366,10 @@ exports.getUserInf=function(req,res,next){
   });
 };
 
-/*在已登录情况下修改密码
+/*在已登录情况下修改密码 post
 * @Param oldPwd
-* @Param newPwd*/
+* @Param newPwd
+* return*/
 exports.modifyPwd=function(req,res,next){
     var user=req.session.user;
     var oldPwd=req.body.oldPwd,
@@ -396,10 +423,10 @@ exports.modifyPwd=function(req,res,next){
     }
 };
 
-/*修改用户的基本信息：昵称、简介
+/*修改用户的基本信息：昵称、简介 post
 * @Param username
 * @Param info
-* */
+* return */
 exports.modifyUserInf=function(req,res,next){
     var username = req.body.username || req.session.user.username;
     var info = req.body.info || req.session.user.info;
@@ -410,7 +437,7 @@ exports.modifyUserInf=function(req,res,next){
         info:info
     });
     user2.modifyUserInf(function(error,result){
-        console.log(error,result)
+        //console.log(error,result)
         if(error){
             return res.json({
                 status:CONST.ERROR.status,
@@ -418,13 +445,47 @@ exports.modifyUserInf=function(req,res,next){
                 result:CONST.ERROR.result
             });
         }
-        if(result){
-            return res.json({
-                status:CONST.SUCCESS.status,
-                msg:CONST.SUCCESS.msg,
-                result:CONST.SUCCESS.result
-            });
-        }
+        return res.json({
+            status:CONST.SUCCESS.status,
+            msg:CONST.SUCCESS.msg,
+            result:CONST.SUCCESS.result
+        });
     });
 
+};
+
+/*修改用户头像：先从客户端上传头像文件，然后在数据库中修改对应用户的image字段指向该图片，post*/
+exports.modifyImage=function(req,res,next){
+    const form = formidable(options);
+    form.parse(req, (err, fields, files) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        var p=files.file.path;//直接路径
+        console.log(p);
+        req.session.user.image=p;
+        //路径存入数据库
+        //截取文件名，减少数据库中的冗余
+        var u=new User({
+            id:req.session.user.id,
+            image:path.basename(p),
+        });
+        u.updateImage(function(error,result){
+            if(error){
+                res.json({
+                    status:CONST.ERROR.status,
+                    msg:CONST.ERROR.msg,
+                    result:CONST.ERROR.result
+                });
+            }
+            if(result){
+                res.json({
+                    status:CONST.SUCCESS.status,
+                    msg:CONST.SUCCESS.msg,
+                    result:CONST.SUCCESS.result
+                });
+            }
+        });
+    });
 };

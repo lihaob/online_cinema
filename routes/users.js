@@ -31,5 +31,6 @@ router.get('/logout',userController.logout);
 router.get('/getUserInf',userController.getUserInf);
 router.post('/modifyPwd',userController.modifyPwd);
 router.post('/modifyUserInf',userController.modifyUserInf);
+router.post('/modifyImage',userController.modifyImage);
 
 module.exports = router;

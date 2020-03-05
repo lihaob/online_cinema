@@ -34,12 +34,23 @@ User.prototype.updatePassword=function(callback){
 };
 
 //如果更新成功，callback的res参数返回更新的行数
+User.prototype.updateImage=function(callback){
+    base.query("update users set image=? where id=?",[this.image,this.id],function(err,res,fields){
+        if(err){
+            return callback(err,null);
+        }
+        //console.log(res.changedRows,res.affectedRows)
+        callback(null,res.changedRows);
+    });
+};
+
+//如果更新成功，callback的res参数返回更新的行数
 User.prototype.modifyUserInf=function(callback){
   base.query('update users set info=?,username=? where id=?',[this.info,this.username,this.id],function(err,res,fields){
       if(err){
           return callback(err,null);
       }
-      callback(null,res.changedRows);
+      callback(null,res.affectedRows);
   });
 };
 

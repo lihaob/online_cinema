@@ -1,9 +1,15 @@
 ```
 基于nodejs和express框架的在线播放网站服务端
 
+环境
+nodejs，express
+
 安装
-mysql数据库在某个db中导入sql文件，然后修改项目的configuration.js中
+1.在项目路径下执行npm install 
+2.mysql数据库新建db，导入online_cinema.sql文件，然后修改项目的configuration.js中
 的数据库配置
+3.可以在bin/www中修改服务器端口
+
 
 项目结构
 com.cinema_online
