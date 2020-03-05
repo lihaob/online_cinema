@@ -1,4 +1,11 @@
 ```
+基于nodejs和express框架的在线播放网站服务端
+
+安装
+mysql数据库在某个db中导入sql文件，然后修改项目的configuration.js中
+的数据库配置
+
+项目结构
 com.cinema_online
 ├─ app.js
 ├─ bin//包装app.js

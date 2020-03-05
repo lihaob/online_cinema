@@ -68,3 +68,8 @@ exports.PERMISSION_DENIED={
     msg:'失败',
     result:'没有权限，当前尚未登录'
 }
+exports.OLD_PASSWORD_ERROR={
+    status:'1011',
+    msg:'失败',
+    result:'旧密码错误'
+}

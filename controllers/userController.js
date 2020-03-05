@@ -339,3 +339,63 @@ exports.getUserInf=function(req,res,next){
       result:user
   });
 };
+
+/*在已登录情况下修改密码*/
+exports.modifyPwd=function(req,res,next){
+    var user=req.session.user;
+    var oldPwd=req.body.oldPwd,
+        newPwd=req.body.newPwd;
+
+    //密码校验器
+    if(oldPwd&&newPwd){
+        //先aes解密，后md5解密
+        var tempPwd1=CryptoJS.AES.decrypt(user.password,secret).toString(CryptoJS.enc.Utf8);//数据库中的密码用aes解码，获得的字符串仍md5加密，而md5不可逆
+        var tempPwd2=CryptoJS.MD5(oldPwd).toString();//对req传过来的旧密码进行md5加密
+        //console.log(tempPwd1,tempPwd2)
+        if(tempPwd1===tempPwd2){
+            //如果旧密码正确
+            //先md5非对称加密后再aes对称加密
+            var tempPwd=CryptoJS.MD5(newPwd).toString();
+            //console.log(tempPwd)
+            var pwd=CryptoJS.AES.encrypt(tempPwd,secret).toString();
+            var u=new User({
+                phone:user.phone,
+                email:user.email,
+                password:pwd
+            })
+            u.updatePassword(function(error,result){
+                if(error){
+                    return res.json({
+                       status:CONST.ERROR.status,
+                       msg:CONST.ERROR.msg,
+                       result:CONST.ERROR.result
+                    });
+                }
+                if(result){
+                    return res.json({
+                        status:CONST.SUCCESS.status,
+                        msg:CONST.SUCCESS.msg,
+                        result:CONST.SUCCESS.result
+                    });
+                }
+            });
+        }else{
+            return res.json({
+                status:CONST.OLD_PASSWORD_ERROR.status,
+                msg:CONST.OLD_PASSWORD_ERROR.msg,
+                result:CONST.OLD_PASSWORD_ERROR.result
+            });
+        }
+    }else{
+        return res.json({
+            status:CONST.PARAM_ERROR.status,
+            msg:CONST.PARAM_ERROR.msg,
+            result:CONST.PARAM_ERROR.result
+        });
+    }
+};
+
+/*修改用户信息，除了密码*/
+exports.modifyUserInf=function(req,res,next){
+
+};
