@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session=require('express-session');
 var bodyParser=require('body-parser');
+var CONST=require('./const')
 
 //自定义模块
 var indexRouter = require('./routes/index');
@@ -31,6 +32,25 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }))
+
+//拦截器
+app.use(function(req,res,next){
+  if(req.session.user){
+    next();
+  }else{
+    //暴露的接口
+    if(req.originalUrl=='/users/loginByPhone'||req.originalUrl=='/users/loginByEmail'
+        ||req.originalUrl=='/users/logout'||req.originalUrl=='/users/captcha'){
+      next();
+    }else{
+      res.json({
+        status:CONST.PERMISSION_DENIED.status,
+        msg:CONST.PERMISSION_DENIED.msg,
+        result:CONST.PERMISSION_DENIED.result
+      });
+    }
+  }
+});
 
 //配置路由
 app.use('/', indexRouter);

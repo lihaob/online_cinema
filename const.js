@@ -63,3 +63,8 @@ exports.LOGOUT_ERROR={
     msg:'失败',
     result:'登出失败，用户尚未登录'
 }
+exports.PERMISSION_DENIED={
+    status:'1010',
+    msg:'失败',
+    result:'没有权限，当前尚未登录'
+}

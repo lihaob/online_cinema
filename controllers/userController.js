@@ -323,5 +323,19 @@ exports.logout=function(req,res,next){
         msg:CONST.LOGOUT_SUCCESS.msg,
         result:CONST.LOGOUT_SUCCESS.result
     });
-}
+};
 
+/*通过cookie获取用户详细信息*/
+exports.getUserInf=function(req,res,next){
+  var user=req.session.user;
+  //某些信息不应该返回给前端，置为空
+  user.id=null;
+  user.password=null;
+  user.createTime=null;
+  user.updateTime=null;
+  return res.json({
+      status:CONST.SUCCESS.status,
+      msg:CONST.SUCCESS.msg,
+      result:user
+  });
+};
