@@ -30,5 +30,6 @@ router.post('/loginByEmail',userController.loginByEmail);
 router.get('/logout',userController.logout);
 router.get('/getUserInf',userController.getUserInf);
 router.post('/modifyPwd',userController.modifyPwd);
+router.post('/modifyUserInf',userController.modifyUserInf);
 
 module.exports = router;

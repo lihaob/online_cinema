@@ -25,12 +25,22 @@ User.prototype.save=function(callback){
 
 //如果更新成功，callback的res参数返回更新的行数
 User.prototype.updatePassword=function(callback){
-    base.query("update users set password=? where phone=?",[this.password,this.phone],function(err,res,fields){
+    base.query("update users set password=? where id=?",[this.password,this.id],function(err,res,fields){
         if(err){
             return callback(err,null);
         }
         callback(null,res.changedRows);
     });
+};
+
+//如果更新成功，callback的res参数返回更新的行数
+User.prototype.modifyUserInf=function(callback){
+  base.query('update users set info=?,username=? where id=?',[this.info,this.username,this.id],function(err,res,fields){
+      if(err){
+          return callback(err,null);
+      }
+      callback(null,res.changedRows);
+  });
 };
 
 User.getUserByName=function(name,callback){

@@ -340,7 +340,9 @@ exports.getUserInf=function(req,res,next){
   });
 };
 
-/*在已登录情况下修改密码*/
+/*在已登录情况下修改密码
+* @Param oldPwd
+* @Param newPwd*/
 exports.modifyPwd=function(req,res,next){
     var user=req.session.user;
     var oldPwd=req.body.oldPwd,
@@ -359,8 +361,7 @@ exports.modifyPwd=function(req,res,next){
             //console.log(tempPwd)
             var pwd=CryptoJS.AES.encrypt(tempPwd,secret).toString();
             var u=new User({
-                phone:user.phone,
-                email:user.email,
+                id:user.id,
                 password:pwd
             })
             u.updatePassword(function(error,result){
@@ -395,7 +396,35 @@ exports.modifyPwd=function(req,res,next){
     }
 };
 
-/*修改用户信息，除了密码*/
+/*修改用户的基本信息：昵称、简介
+* @Param username
+* @Param info
+* */
 exports.modifyUserInf=function(req,res,next){
+    var username = req.body.username || req.session.user.username;
+    var info = req.body.info || req.session.user.info;
+    var user1=req.session.user;
+    var user2=new User({
+        id:user1.id,
+        username:username,
+        info:info
+    });
+    user2.modifyUserInf(function(error,result){
+        console.log(error,result)
+        if(error){
+            return res.json({
+                status:CONST.ERROR.status,
+                msg:CONST.ERROR.msg,
+                result:CONST.ERROR.result
+            });
+        }
+        if(result){
+            return res.json({
+                status:CONST.SUCCESS.status,
+                msg:CONST.SUCCESS.msg,
+                result:CONST.SUCCESS.result
+            });
+        }
+    });
 
 };
