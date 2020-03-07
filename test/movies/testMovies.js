@@ -6,9 +6,9 @@ Movie.getMoviePage(97,10,function (err,res) {
 })
 */
 
-/*Movie.getAllMovies(function (err,res) {
+Movie.getAllMovies(function (err,res) {
     console.log(res)
-})*/
+})
 
 /*Movie.getPages(10,function (err,res) {
     console.log(res)

@@ -11,7 +11,7 @@ var CONST=require('./const')
 //自定义模块
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var favoritesRouter=require('./routes/favorites');
 
 
 var app = express();
@@ -57,6 +57,8 @@ app.use(function(req,res,next){
 //配置路由
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/favorites',favoritesRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

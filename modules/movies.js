@@ -3,7 +3,7 @@ var base=require('./base')
 function Movie(movie){
     this.id=movie.id;
     this.mv_name=movie.mv_name;
-    this.duration=movie.duration;
+    this.mv_duration=movie.mv_duration;
     this.mv_img=movie.mv_img;
     this.mv_score=movie.mv_score;
 }

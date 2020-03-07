@@ -23,3 +23,12 @@ CREATE TABLE `usersLog` (
   FOREIGN KEY (users_id) REFERENCES users(id),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `favorites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `movie_id` varchar(50) DEFAULT NULL,
+  `users_id` bigint(20) DEFAULT NULL,
+  FOREIGN KEY (users_id) REFERENCES users(id),
+  FOREIGN KEY (movie_id) REFERENCES mv_info(id),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15579 DEFAULT CHARSET=utf8;
